@@ -1,0 +1,156 @@
+[
+  {
+    "id": "yyt_001",
+    "restaurant": "Yum Yai Thai",
+    "name": "Pad See Ew (Chicken)",
+    "portion_size": "1 container (450g)",
+    "calories": 680,
+    "protein_g": 38,
+    "carbs_g": 72,
+    "fat_g": 24,
+    "price": 17.50
+  },
+  {
+    "id": "yyt_002",
+    "restaurant": "Yum Yai Thai",
+    "name": "Spicy Fried Rice (Chicken & Basil)",
+    "portion_size": "1 container (400g)",
+    "calories": 620,
+    "protein_g": 34,
+    "carbs_g": 78,
+    "fat_g": 18,
+    "price": 16.90
+  },
+  {
+    "id": "yyt_003",
+    "restaurant": "Yum Yai Thai",
+    "name": "Vegetable Spring Rolls (4 pcs)",
+    "portion_size": "4 pieces (160g)",
+    "calories": 290,
+    "protein_g": 6,
+    "carbs_g": 38,
+    "fat_g": 13,
+    "price": 9.50
+  },
+  {
+    "id": "yyt_004",
+    "restaurant": "Yum Yai Thai",
+    "name": "Tom Yum Soup with Prawns",
+    "portion_size": "1 bowl (350ml)",
+    "calories": 210,
+    "protein_g": 24,
+    "carbs_g": 12,
+    "fat_g": 6,
+    "price": 14.50
+  },
+  {
+    "id": "yyt_005",
+    "restaurant": "Yum Yai Thai",
+    "name": "Thai Green Curry with Chicken Breast",
+    "portion_size": "1 container curry + jasmine rice (450g)",
+    "calories": 710,
+    "protein_g": 42,
+    "carbs_g": 64,
+    "fat_g": 32,
+    "price": 18.00
+  },
+  {
+    "id": "tm_001",
+    "restaurant": "Tapari Momo",
+    "name": "Steamed Chicken Dumplings (10 pcs)",
+    "portion_size": "10 pieces (300g)",
+    "calories": 480,
+    "protein_g": 36,
+    "carbs_g": 52,
+    "fat_g": 14,
+    "price": 15.00
+  },
+  {
+    "id": "tm_002",
+    "restaurant": "Tapari Momo",
+    "name": "Steamed Buff Dumplings (10 pcs)",
+    "portion_size": "10 pieces (300g)",
+    "calories": 520,
+    "protein_g": 40,
+    "carbs_g": 52,
+    "fat_g": 16,
+    "price": 16.00
+  },
+  {
+    "id": "tm_003",
+    "restaurant": "Tapari Momo",
+    "name": "Fried Chicken Momo (10 pcs)",
+    "portion_size": "10 pieces (320g)",
+    "calories": 640,
+    "protein_g": 35,
+    "carbs_g": 56,
+    "fat_g": 28,
+    "price": 16.50
+  },
+  {
+    "id": "tm_004",
+    "restaurant": "Tapari Momo",
+    "name": "Chilli C-Momo Chicken (10 pcs)",
+    "portion_size": "10 pieces in spicy tomato-chilli sauce (380g)",
+    "calories": 560,
+    "protein_g": 37,
+    "carbs_g": 60,
+    "fat_g": 18,
+    "price": 17.50
+  },
+  {
+    "id": "kfc_001",
+    "restaurant": "KFC",
+    "name": "Zinger Burger",
+    "portion_size": "1 burger (210g)",
+    "calories": 515,
+    "protein_g": 31,
+    "carbs_g": 44,
+    "fat_g": 23,
+    "price": 8.95
+  },
+  {
+    "id": "kfc_002",
+    "restaurant": "KFC",
+    "name": "Original Recipe Chicken (1 Piece - Breast)",
+    "portion_size": "1 piece (160g)",
+    "calories": 390,
+    "protein_g": 39,
+    "carbs_g": 11,
+    "fat_g": 21,
+    "price": 4.50
+  },
+  {
+    "id": "kfc_003",
+    "restaurant": "KFC",
+    "name": "Original Recipe Chicken (2 Pieces - Thigh & Drumstick)",
+    "portion_size": "2 pieces (220g)",
+    "calories": 540,
+    "protein_g": 42,
+    "carbs_g": 16,
+    "fat_g": 34,
+    "price": 7.95
+  },
+  {
+    "id": "kfc_004",
+    "restaurant": "KFC",
+    "name": "Wicked Wings (3 Pieces)",
+    "portion_size": "3 pieces (150g)",
+    "calories": 420,
+    "protein_g": 27,
+    "carbs_g": 18,
+    "fat_g": 27,
+    "price": 6.25
+  },
+  {
+    "id": "kfc_005",
+    "restaurant": "KFC",
+    "name": "Coleslaw (Regular)",
+    "portion_size": "1 tub (140g)",
+    "calories": 150,
+    "protein_g": 1,
+    "carbs_g": 14,
+    "fat_g": 10,
+    "price": 3.95
+  }
+]
