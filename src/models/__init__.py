@@ -6,6 +6,13 @@ from .schemas import (
     ProposedMealItem,
     MealValidationResult,
 )
+from .api_schemas import (
+    MealRecommendationRequest,
+    MealItemResponse,
+    NutritionSummaryResponse,
+    MealRecommendationResponse,
+    HealthResponse,
+)
 
 __all__ = [
     "UserMacros",
@@ -14,4 +21,9 @@ __all__ = [
     "MenuItem",
     "ProposedMealItem",
     "MealValidationResult",
+    "MealRecommendationRequest",
+    "MealItemResponse",
+    "NutritionSummaryResponse",
+    "MealRecommendationResponse",
+    "HealthResponse",
 ]
