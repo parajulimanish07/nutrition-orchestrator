@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Activity, Sparkles, Cpu, CheckCircle2, AlertCircle } from "lucide-react";
 import { checkBackendHealth } from "@/lib/api";
 import { HealthCheckResponse } from "@/types/nutrition";
+import { Badge } from "@/components/ui/badge";
 
 export function Header() {
   const [health, setHealth] = useState<HealthCheckResponse | null>(null);
@@ -21,35 +22,38 @@ export function Header() {
   }, []);
 
   return (
-    <header className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
+    <header className="border-b border-zinc-800/80 bg-zinc-950/75 backdrop-blur-xl sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        {/* Brand */}
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <Sparkles className="w-5 h-5 text-zinc-950 font-bold" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-md shadow-emerald-500/20 ring-1 ring-emerald-400/30">
+            <Sparkles className="w-4 h-4 text-zinc-950 font-extrabold" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-lg font-bold text-white tracking-tight">
+              <h1 className="text-base font-bold text-white tracking-tight">
                 Nutrition Orchestrator
               </h1>
-              <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-[10px] font-semibold px-2 py-0">
                 Phase 4
-              </span>
+              </Badge>
             </div>
-            <p className="text-xs text-zinc-400">
+            <p className="text-[11px] text-zinc-400 hidden sm:block">
               Mathematically Verified Multi-Agent Meal Planning
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-4">
-          <div className="hidden sm:flex items-center space-x-2 px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-300">
+        {/* Right Info Chips */}
+        <div className="flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-2 px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-300">
             <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span>LangGraph + AWS Bedrock</span>
+            <span className="text-zinc-400">Engine:</span>
+            <span className="text-zinc-200 font-medium">LangGraph + Bedrock</span>
           </div>
 
           <div
-            className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium border ${
+            className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
               loading
                 ? "bg-zinc-800/50 text-zinc-400 border-zinc-700"
                 : health

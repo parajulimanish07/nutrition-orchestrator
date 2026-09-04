@@ -1,72 +1,71 @@
 "use client";
 
 import React from "react";
-import { Flame, Dumbbell, Tag } from "lucide-react";
+import { Flame, Dumbbell } from "lucide-react";
 import { MealItem } from "@/types/nutrition";
 import { formatCurrency } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface MealCardProps {
   item: MealItem;
-  index: number;
+  index?: number;
 }
 
-export function MealCard({ item, index }: MealCardProps) {
-  const getRestaurantBadge = (restaurant: string) => {
+export function MealCard({ item }: MealCardProps) {
+  const getVendorBadge = (restaurant: string) => {
     switch (restaurant) {
       case "Yum Yai Thai":
         return {
           label: "🍜 Yum Yai Thai",
-          classes: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+          variant: "success" as const,
         };
       case "Tapari Momo":
         return {
           label: "🥟 Tapari Momo",
-          classes: "bg-violet-500/10 text-violet-400 border-violet-500/30",
+          variant: "violet" as const,
         };
       case "KFC":
         return {
           label: "🍗 KFC",
-          classes: "bg-red-500/10 text-red-400 border-red-500/30",
+          variant: "destructive" as const,
         };
       default:
         return {
           label: restaurant,
-          classes: "bg-zinc-800 text-zinc-300 border-zinc-700",
+          variant: "secondary" as const,
         };
     }
   };
 
-  const badge = getRestaurantBadge(item.restaurant);
+  const vendor = getVendorBadge(item.restaurant);
 
   return (
-    <div className="bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 rounded-xl p-4 transition-all duration-200 hover:shadow-lg hover:shadow-black/50 group">
-      <div className="flex items-start justify-between gap-2 mb-3">
-        <div>
-          <span
-            className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold border mb-2 ${badge.classes}`}
-          >
-            {badge.label}
+    <div className="group rounded-xl border border-zinc-800/90 bg-zinc-950/60 p-4 transition-all duration-200 hover:border-zinc-700 hover:bg-zinc-900/60 hover:shadow-lg hover:shadow-black/40 flex flex-col justify-between">
+      <div>
+        <div className="flex items-center justify-between gap-2 mb-2.5">
+          <Badge variant={vendor.variant} className="text-[11px] font-semibold py-0.5">
+            {vendor.label}
+          </Badge>
+          <span className="text-xs font-bold font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+            {formatCurrency(item.price)}
           </span>
-          <h3 className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">
-            {item.name}
-          </h3>
         </div>
-        <div className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-200 flex-shrink-0">
-          <Tag className="w-3 h-3 text-emerald-400" />
-          <span>{formatCurrency(item.price)}</span>
-        </div>
+
+        <h4 className="text-sm font-semibold text-white group-hover:text-emerald-300 transition-colors leading-snug mb-3">
+          {item.name}
+        </h4>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-800/60">
-        <div className="flex items-center space-x-2 text-xs text-zinc-400">
-          <Flame className="w-3.5 h-3.5 text-amber-400" />
-          <span className="font-medium text-zinc-200">{item.calories}</span>
-          <span className="text-[10px]">kcal</span>
+      <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-zinc-800/80">
+        <div className="flex items-center space-x-1.5 text-xs text-zinc-400">
+          <Flame className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+          <span className="font-bold text-zinc-100">{item.calories}</span>
+          <span className="text-[10px] text-zinc-500">kcal</span>
         </div>
-        <div className="flex items-center space-x-2 text-xs text-zinc-400">
-          <Dumbbell className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="font-medium text-zinc-200">{item.protein_g}g</span>
-          <span className="text-[10px]">protein</span>
+        <div className="flex items-center space-x-1.5 text-xs text-zinc-400">
+          <Dumbbell className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
+          <span className="font-bold text-zinc-100">{item.protein_g}g</span>
+          <span className="text-[10px] text-zinc-500">protein</span>
         </div>
       </div>
     </div>
