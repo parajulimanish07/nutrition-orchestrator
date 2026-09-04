@@ -106,12 +106,21 @@ pip install -r requirements.txt
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
-### 4. Start the FastAPI Server
+### 4. Start the FastAPI Backend Server
 ```bash
 uvicorn src.api.main:app --reload --port 8000
 ```
 Interactive API documentation (Swagger UI) is available at:
 👉 **`http://localhost:8000/docs`**
+
+### 5. Start the Next.js Frontend Web App
+In a separate terminal:
+```bash
+cd frontend
+npm run dev
+```
+Open your browser at:
+👉 **`http://localhost:3000`**
 
 ---
 
@@ -219,6 +228,11 @@ docker run -p 8000:8000 nutrition-orchestrator:latest
   - FastAPI asynchronous gateway with CORS & structured request logging
   - Integration test suite for HTTP status codes and schema validation
   - Docker containerization for production deployment
+- [x] **Phase 4: Frontend Integration (Next.js & Tailwind CSS)**
+  - Next.js 16 App Router web app with TypeScript and Tailwind CSS v4
+  - Input form with presets for *Yum Yai Thai*, *Tapari Momo*, and *KFC*
+  - Real-time macro progress bars, buffer diagnostics, and dish cards
+  - Live backend health status monitoring
 
 ---
 
