@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Cpu, Workflow } from "lucide-react";
+import { GitBranch, CheckCheck } from "lucide-react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 
@@ -13,21 +13,21 @@ interface FeedbackBannerProps {
 
 export function FeedbackBanner({ feedback, iterations, status }: FeedbackBannerProps) {
   return (
-    <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-4 shadow-lg backdrop-blur-sm">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-xs">
       <Accordion type="single" collapsible defaultValue="diagnostics">
         <AccordionItem value="diagnostics" className="border-b-0">
           <AccordionTrigger className="py-1 hover:no-underline">
             <div className="flex items-center space-x-2.5 text-left">
-              <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-                <Workflow className="w-4 h-4" />
+              <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-700 flex-shrink-0">
+                <GitBranch className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-semibold text-white block">
-                  Multi-Agent Audit Trail & Loopback Details
+                <span className="text-xs sm:text-sm font-bold text-slate-900 block">
+                  Multi-Agent Audit Trail & Execution History
                 </span>
-                <span className="text-[11px] text-zinc-400">
+                <span className="text-xs text-slate-500">
                   {iterations === 1
-                    ? "Single-pass execution — constraints fulfilled immediately"
+                    ? "Single-pass execution — constraints met immediately"
                     : `${iterations} iterative loopback cycles for error correction`}
                 </span>
               </div>
@@ -35,24 +35,24 @@ export function FeedbackBanner({ feedback, iterations, status }: FeedbackBannerP
           </AccordionTrigger>
 
           <AccordionContent className="pt-3 pb-1">
-            <div className="p-3 rounded-xl bg-zinc-950/80 border border-zinc-800/80 space-y-2">
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2 text-[11px] text-zinc-400">
-                  <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-                  <span className="font-medium text-zinc-300">Math Worker Evaluation:</span>
+                <div className="flex items-center space-x-2 text-xs text-slate-600">
+                  <CheckCheck className="w-4 h-4 text-emerald-600" />
+                  <span className="font-semibold text-slate-800">Math Worker Evaluation:</span>
                 </div>
-                <Badge variant="outline" className="text-[10px] font-mono border-emerald-500/30 text-emerald-400">
-                  State Machine Status: {status}
+                <Badge variant="outline" className="text-[10px] font-mono border-slate-300 text-slate-700 bg-white">
+                  State: {status}
                 </Badge>
               </div>
 
-              <p className="text-xs text-zinc-300 font-mono leading-relaxed bg-zinc-900/90 p-2.5 rounded-lg border border-zinc-800 text-[11px]">
+              <div className="text-xs font-mono text-slate-700 bg-white p-3 rounded-lg border border-slate-200 leading-relaxed shadow-2xs">
                 {feedback}
-              </p>
+              </div>
 
-              <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-1">
-                <span>Supervisor routing: finalized without prompt drift</span>
-                <span>Node path: Supervisor → Menu Worker → Math Worker → Supervisor</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px] text-slate-500 pt-1">
+                <span>Supervisor routing: Finalized without hallucinations</span>
+                <span className="font-mono text-[10px] text-slate-400">Path: Supervisor → Menu Worker → Math Worker → Final State</span>
               </div>
             </div>
           </AccordionContent>

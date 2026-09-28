@@ -3,25 +3,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-zinc-100 text-zinc-900 hover:bg-zinc-200",
+          "border-slate-200 bg-slate-900 text-white shadow-xs hover:bg-slate-800",
         secondary:
-          "border-zinc-800 bg-zinc-800/80 text-zinc-300 hover:bg-zinc-800",
+          "border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200",
         destructive:
-          "border-rose-500/30 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20",
-        outline: "text-zinc-300 border-zinc-700",
+          "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100",
+        outline:
+          "border-slate-300 text-slate-700 bg-white hover:bg-slate-50",
         success:
-          "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20",
+          "border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100",
         warning:
-          "border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20",
+          "border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100",
         cyan:
-          "border-cyan-500/30 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20",
+          "border-sky-200 bg-sky-50 text-sky-800 hover:bg-sky-100",
         violet:
-          "border-violet-500/30 bg-violet-500/10 text-violet-400 hover:bg-violet-500/20",
+          "border-indigo-200 bg-indigo-50 text-indigo-800 hover:bg-indigo-100",
       },
     },
     defaultVariants: {

@@ -37,61 +37,68 @@ export function MacroSummaryCard({
   const isApproved = status === "APPROVED" && summary.fits_calorie_budget;
 
   return (
-    <Card className="border-zinc-800/80 bg-zinc-900/60 shadow-2xl overflow-hidden">
-      <CardHeader className="pb-4 border-b border-zinc-800/80">
+    <Card className="border border-slate-200/90 shadow-sm overflow-hidden bg-white">
+      <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/50">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold ${
+              isApproved ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
+            }`}>
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <CardTitle className="text-base flex items-center gap-2">
-                Macro Verification Report
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-base font-bold text-slate-900">
+                  Macro Verification Analysis
+                </CardTitle>
                 <Badge variant={isApproved ? "success" : "warning"} className="text-[10px] font-semibold">
-                  {isApproved ? "Zero Hallucination Math" : "Approximation"}
+                  {isApproved ? "Optimal Fit" : "Approximation"}
                 </Badge>
-              </CardTitle>
+              </div>
+              <p className="text-xs text-slate-500">
+                Mathematical evaluation against daily macronutrient thresholds
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Badge variant="secondary" className="font-mono text-[11px] gap-1 px-2.5 py-1">
-              <RefreshCw className="w-3 h-3 text-cyan-400" />
+          <div className="flex items-center space-x-2 self-start sm:self-auto">
+            <Badge variant="secondary" className="font-mono text-[11px] gap-1 px-2.5 py-1 text-slate-700">
+              <RefreshCw className="w-3 h-3 text-slate-500" />
               <span>{iterationsUsed} {iterationsUsed === 1 ? "cycle" : "cycles"}</span>
             </Badge>
-            <Badge variant="secondary" className="font-mono text-[11px] gap-1 px-2.5 py-1">
-              <Clock className="w-3 h-3 text-emerald-400" />
+            <Badge variant="secondary" className="font-mono text-[11px] gap-1 px-2.5 py-1 text-slate-700">
+              <Clock className="w-3 h-3 text-slate-500" />
               <span>{executionTimeMs} ms</span>
             </Badge>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="pt-5 space-y-6">
+      <CardContent className="pt-5 space-y-5">
         {/* Visual Progress Meters */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Calorie Meter */}
-          <div className="p-4 rounded-xl bg-zinc-950/70 border border-zinc-800/80 space-y-3">
+          <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-200/80 space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-1.5 text-amber-400">
-                <Flame className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">Calories</span>
+              <div className="flex items-center space-x-1.5 text-amber-800 font-semibold text-xs">
+                <Flame className="w-4 h-4 text-amber-600" />
+                <span className="uppercase tracking-wider">Calories</span>
               </div>
-              <Badge variant="outline" className="text-[10px] font-mono border-amber-500/30 text-amber-400">
-                {calPercentage}% Target
+              <Badge variant="outline" className="text-[10px] font-mono border-amber-300 bg-amber-50 text-amber-800">
+                {calPercentage}% of Goal
               </Badge>
             </div>
 
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-3xl font-extrabold text-white tracking-tight">
+                <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
                   {summary.total_calories}
                 </span>
-                <span className="text-xs text-zinc-400 ml-1">kcal in meal</span>
+                <span className="text-xs text-slate-500 ml-1">kcal in meal</span>
               </div>
-              <div className="text-right text-[11px] text-zinc-400">
-                <span>Day total: </span>
-                <span className="text-zinc-200 font-semibold">{totalDayCalories} / {targetCalories}</span>
+              <div className="text-right text-xs text-slate-500">
+                <span>Daily total: </span>
+                <span className="text-slate-900 font-bold">{totalDayCalories} / {targetCalories}</span>
               </div>
             </div>
 
@@ -100,63 +107,61 @@ export function MacroSummaryCard({
               indicatorClassName={
                 totalDayCalories > targetCalories
                   ? "bg-rose-500"
-                  : "bg-gradient-to-r from-amber-500 to-amber-300"
+                  : "bg-amber-500"
               }
             />
 
-            {/* Dynamic remaining buffer tag */}
-            <div className="flex items-center justify-between text-xs pt-1">
-              <span className="text-zinc-400">Buffer after meal:</span>
+            <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
+              <span className="text-slate-500">Buffer after meal:</span>
               <Badge
                 variant={summary.remaining_calories_after_meal >= 0 ? "success" : "destructive"}
-                className="text-[10px] font-mono font-bold px-2 py-0.5"
+                className="text-[10px] font-mono font-bold"
               >
                 {summary.remaining_calories_after_meal >= 0
                   ? `+${summary.remaining_calories_after_meal} kcal buffer`
-                  : `${summary.remaining_calories_after_meal} kcal deficit overshoot`}
+                  : `${summary.remaining_calories_after_meal} kcal deficit`}
               </Badge>
             </div>
           </div>
 
           {/* Protein Meter */}
-          <div className="p-4 rounded-xl bg-zinc-950/70 border border-zinc-800/80 space-y-3">
+          <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-200/80 space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-1.5 text-cyan-400">
-                <Dumbbell className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">Protein</span>
+              <div className="flex items-center space-x-1.5 text-indigo-800 font-semibold text-xs">
+                <Dumbbell className="w-4 h-4 text-indigo-600" />
+                <span className="uppercase tracking-wider">Protein</span>
               </div>
-              <Badge variant="outline" className="text-[10px] font-mono border-cyan-500/30 text-cyan-400">
-                {proteinPercentage}% Target
+              <Badge variant="outline" className="text-[10px] font-mono border-indigo-200 bg-indigo-50 text-indigo-800">
+                {proteinPercentage}% of Goal
               </Badge>
             </div>
 
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-3xl font-extrabold text-white tracking-tight">
+                <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
                   {summary.total_protein_g}
                 </span>
-                <span className="text-xs text-zinc-400 ml-1">grams in meal</span>
+                <span className="text-xs text-slate-500 ml-1">grams in meal</span>
               </div>
-              <div className="text-right text-[11px] text-zinc-400">
-                <span>Day total: </span>
-                <span className="text-zinc-200 font-semibold">{totalDayProtein}g / {targetProtein}g</span>
+              <div className="text-right text-xs text-slate-500">
+                <span>Daily total: </span>
+                <span className="text-slate-900 font-bold">{totalDayProtein}g / {targetProtein}g</span>
               </div>
             </div>
 
             <Progress
               value={proteinPercentage}
-              indicatorClassName="bg-gradient-to-r from-cyan-500 to-teal-400"
+              indicatorClassName="bg-indigo-600"
             />
 
-            {/* Dynamic remaining buffer tag */}
-            <div className="flex items-center justify-between text-xs pt-1">
-              <span className="text-zinc-400">Goal fulfillment:</span>
+            <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
+              <span className="text-slate-500">Goal fulfillment:</span>
               <Badge
                 variant={summary.meets_protein_target ? "success" : "cyan"}
-                className="text-[10px] font-mono font-bold px-2 py-0.5"
+                className="text-[10px] font-mono font-bold"
               >
                 {summary.meets_protein_target
-                  ? "✓ Target Satisfied"
+                  ? "✓ Target Met Today"
                   : `${summary.remaining_protein_after_meal}g needed today`}
               </Badge>
             </div>
@@ -167,26 +172,26 @@ export function MacroSummaryCard({
         <div
           className={`p-3.5 rounded-xl border flex items-center justify-between ${
             isApproved
-              ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300"
-              : "bg-amber-500/10 border-amber-500/30 text-amber-300"
+              ? "bg-emerald-50/80 border-emerald-200 text-emerald-900"
+              : "bg-amber-50/80 border-amber-200 text-amber-900"
           }`}
         >
           <div className="flex items-center space-x-2.5">
             {isApproved ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
             ) : (
-              <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0" />
+              <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
             )}
             <div>
-              <p className="text-xs font-bold tracking-tight">
+              <p className="text-xs font-bold">
                 {isApproved
-                  ? "Optimal Mathematical Solution Confirmed"
+                  ? "Deterministic Macro Fit Confirmed"
                   : "Approximation: Boundary Constraints Met"}
               </p>
-              <p className="text-[11px] opacity-80 mt-0.5">
+              <p className="text-[11px] text-slate-600 mt-0.5">
                 {isApproved
-                  ? "Calculated deterministically by Math Worker — zero AI numerical hallucinations."
-                  : "Selection adjusted to stay within target calorie limits."}
+                  ? "Every item's nutrition profile was deterministically summed by the Math Worker without generative hallucination."
+                  : "Items adjusted within available restaurant catalog boundaries."}
               </p>
             </div>
           </div>

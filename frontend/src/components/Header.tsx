@@ -1,81 +1,120 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Activity, Sparkles, Cpu, CheckCircle2, AlertCircle } from "lucide-react";
+import { Sparkles, CheckCircle2, AlertCircle, RefreshCw, Compass, Sliders } from "lucide-react";
 import { checkBackendHealth } from "@/lib/api";
 import { HealthCheckResponse } from "@/types/nutrition";
 import { Badge } from "@/components/ui/badge";
 
-export function Header() {
+interface HeaderProps {
+  activeTab?: "planner" | "catalog";
+  onTabChange?: (tab: "planner" | "catalog") => void;
+}
+
+export function Header({ activeTab = "planner", onTabChange }: HeaderProps) {
   const [health, setHealth] = useState<HealthCheckResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const verifyHealth = async () => {
+    setLoading(true);
+    const res = await checkBackendHealth();
+    setHealth(res);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    async function verify() {
-      const res = await checkBackendHealth();
-      setHealth(res);
-      setLoading(false);
-    }
-    verify();
-    const interval = setInterval(verify, 15000);
+    verifyHealth();
+    const interval = setInterval(verifyHealth, 15000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <header className="border-b border-zinc-800/80 bg-zinc-950/75 backdrop-blur-xl sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand */}
-        <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-md shadow-emerald-500/20 ring-1 ring-emerald-400/30">
-            <Sparkles className="w-4 h-4 text-zinc-950 font-extrabold" />
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md transition-all">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        {/* Brand identity */}
+        <div className="flex items-center space-x-3.5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center shadow-sm shadow-emerald-700/20 text-white flex-shrink-0">
+            <Sparkles className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold text-white tracking-tight">
-                Nutrition Orchestrator
-              </h1>
-              <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-[10px] font-semibold px-2 py-0">
-                Phase 4
+              <span className="text-base font-bold text-slate-900 tracking-tight">
+                NutriOrchestrator
+              </span>
+              <Badge variant="success" className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0">
+                Verified
               </Badge>
             </div>
-            <p className="text-[11px] text-zinc-400 hidden sm:block">
-              Mathematically Verified Multi-Agent Meal Planning
+            <p className="text-xs text-slate-500 hidden sm:block">
+              Precision Macro Optimization & Deterministic Meal Intelligence
             </p>
           </div>
         </div>
 
-        {/* Right Info Chips */}
+        {/* View Switcher Tabs (if onTabChange provided) */}
+        {onTabChange && (
+          <nav className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/70">
+            <button
+              type="button"
+              onClick={() => onTabChange("planner")}
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                activeTab === "planner"
+                  ? "bg-white text-slate-900 shadow-xs border border-slate-200/60"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
+            >
+              <Sliders className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Meal Planner</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onTabChange("catalog")}
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                activeTab === "catalog"
+                  ? "bg-white text-slate-900 shadow-xs border border-slate-200/60"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5 text-indigo-600" />
+              <span>Menu Database</span>
+            </button>
+          </nav>
+        )}
+
+        {/* Right Info Chips: API status + engine */}
         <div className="flex items-center space-x-3">
-          <div className="hidden md:flex items-center space-x-2 px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-300">
-            <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-zinc-400">Engine:</span>
-            <span className="text-zinc-200 font-medium">LangGraph + Bedrock</span>
+          <div className="hidden lg:flex items-center space-x-2 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-600">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block" />
+            <span className="font-medium text-slate-700">LangGraph Multi-Agent</span>
           </div>
 
-          <div
-            className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+          <button
+            type="button"
+            onClick={verifyHealth}
+            title="Click to re-check API connection"
+            className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer ${
               loading
-                ? "bg-zinc-800/50 text-zinc-400 border-zinc-700"
+                ? "bg-slate-50 text-slate-500 border-slate-200"
                 : health
-                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                : "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                ? "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
+                : "bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100"
             }`}
           >
             {loading ? (
-              <Activity className="w-3.5 h-3.5 animate-spin text-zinc-400" />
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-400" />
             ) : health ? (
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             ) : (
-              <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
+              <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
             )}
             <span>
               {loading
-                ? "Connecting..."
+                ? "Checking..."
                 : health
-                ? `FastAPI Online (v${health.version})`
-                : "Backend Offline"}
+                ? `API Online (v${health.version})`
+                : "API Offline"}
             </span>
-          </div>
+          </button>
         </div>
       </div>
     </header>
