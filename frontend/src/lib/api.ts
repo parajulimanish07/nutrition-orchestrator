@@ -5,20 +5,38 @@ import {
   MenuItemCatalog,
 } from "@/types/nutrition";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// Use same-origin proxy in browser to guarantee zero CORS or privacy extension blocks
+const getBaseUrl = (): string => {
+  if (typeof window !== "undefined") {
+    return "/api/proxy";
+  }
+  return (
+    process.env.INTERNAL_API_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://nutrition-orchestrator.onrender.com"
+  );
+};
 
 export async function checkBackendHealth(): Promise<HealthCheckResponse | null> {
+  const baseUrl = getBaseUrl();
   try {
-    const res = await fetch(`${API_BASE_URL}/health`, {
-      method: "GET",
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    return await res.json();
+    const res = await fetch(`${baseUrl}/health`);
+    if (res.ok) return await res.json();
   } catch (error) {
-    console.error("Health check failed:", error);
-    return null;
+    console.warn("Primary health check failed, retrying once...", error);
   }
+
+  // Fallback: If proxy failed or during cold start, try direct URL or retry once
+  try {
+    const directUrl =
+      process.env.NEXT_PUBLIC_API_URL || "https://nutrition-orchestrator.onrender.com";
+    const res = await fetch(`${directUrl}/health`);
+    if (res.ok) return await res.json();
+  } catch (e) {
+    console.error("Health check error:", e);
+  }
+
+  return null;
 }
 
 export async function fetchMenuCatalog(filters?: {
@@ -26,16 +44,14 @@ export async function fetchMenuCatalog(filters?: {
   min_protein?: number;
   max_calories?: number;
 }): Promise<MenuItemCatalog[]> {
+  const baseUrl = getBaseUrl();
   try {
-    const url = new URL(`${API_BASE_URL}/api/v1/menu`);
+    const url = new URL(`${baseUrl}/api/v1/menu`, typeof window !== "undefined" ? window.location.origin : undefined);
     if (filters?.restaurant) url.searchParams.set("restaurant", filters.restaurant);
     if (filters?.min_protein !== undefined) url.searchParams.set("min_protein", String(filters.min_protein));
     if (filters?.max_calories !== undefined) url.searchParams.set("max_calories", String(filters.max_calories));
-    
-    const res = await fetch(url.toString(), {
-      method: "GET",
-      cache: "no-store",
-    });
+
+    const res = await fetch(url.toString());
     if (!res.ok) return [];
     return await res.json();
   } catch (error) {
@@ -47,7 +63,8 @@ export async function fetchMenuCatalog(filters?: {
 export async function recommendMeal(
   payload: MealRecommendationRequest
 ): Promise<MealRecommendationResponse> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/recommend-meal`, {
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/v1/recommend-meal`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

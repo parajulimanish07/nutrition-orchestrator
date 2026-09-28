@@ -14,19 +14,26 @@ interface HeaderProps {
 export function Header({ activeTab = "planner", onTabChange }: HeaderProps) {
   const [health, setHealth] = useState<HealthCheckResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
 
   const verifyHealth = async () => {
     setLoading(true);
     const res = await checkBackendHealth();
     setHealth(res);
     setLoading(false);
+    if (!res) {
+      setRetryCount((prev) => prev + 1);
+    } else {
+      setRetryCount(0);
+    }
   };
 
   useEffect(() => {
     verifyHealth();
-    const interval = setInterval(verifyHealth, 15000);
+    // Check every 10 seconds while waking up, or every 20 seconds once online
+    const interval = setInterval(verifyHealth, health ? 20000 : 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [health]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md transition-all">
@@ -91,12 +98,14 @@ export function Header({ activeTab = "planner", onTabChange }: HeaderProps) {
           <button
             type="button"
             onClick={verifyHealth}
-            title="Click to re-check API connection"
+            title={health ? "API is connected" : "Click to reconnect (Render free instances take ~30s to wake up)"}
             className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer ${
               loading
-                ? "bg-slate-50 text-slate-500 border-slate-200"
+                ? "bg-slate-50 text-slate-600 border-slate-200"
                 : health
                 ? "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
+                : retryCount < 4
+                ? "bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 animate-pulse"
                 : "bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100"
             }`}
           >
@@ -104,15 +113,19 @@ export function Header({ activeTab = "planner", onTabChange }: HeaderProps) {
               <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-400" />
             ) : health ? (
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            ) : retryCount < 4 ? (
+              <RefreshCw className="w-3.5 h-3.5 text-amber-600 animate-spin" />
             ) : (
               <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
             )}
             <span>
               {loading
-                ? "Checking..."
+                ? "Checking API..."
                 : health
                 ? `API Online (v${health.version})`
-                : "API Offline"}
+                : retryCount < 4
+                ? "Waking Up API..."
+                : "API Offline (Click to Retry)"}
             </span>
           </button>
         </div>
