@@ -58,6 +58,26 @@ app.add_middleware(
 
 
 @app.get(
+    "/",
+    summary="Root Service Info",
+    tags=["System"],
+)
+async def root():
+    """Welcome endpoint providing service status and links to documentation."""
+    return {
+        "service": "Precision Nutrition & Body Recomposition Orchestrator API",
+        "status": "online",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/health",
+        "endpoints": {
+            "menu": "/api/v1/menu",
+            "recommend_meal": "/api/v1/recommend-meal",
+        },
+    }
+
+
+@app.get(
     "/health",
     response_model=HealthResponse,
     summary="Health Check",
